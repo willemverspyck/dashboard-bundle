@@ -1,0 +1,57 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Spyck\DashboardBundle\Widget;
+
+abstract class AbstractEntityParameter implements EntityParameterInterface
+{
+    private ?int $data = null;
+
+    private ?object $dataAsObject = null;
+
+    private bool $request;
+
+    public function getData(): ?int
+    {
+        return $this->data;
+    }
+
+    public function getDataAsObject(): ?object
+    {
+        return $this->dataAsObject;
+    }
+
+    public function getEnvironment(): ?string
+    {
+        return null;
+    }
+
+    public function getRoute(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isRequest(): bool
+    {
+        return $this->request;
+    }
+
+    public function setData(string $data): void
+    {
+        $this->data = intval($data);
+    }
+
+    public function setDataAsObject(?object $dataAsObject): void
+    {
+        $this->dataAsObject = $dataAsObject;
+    }
+
+    public function setRequest(bool $request): void
+    {
+        $this->request = $request;
+    }
+}

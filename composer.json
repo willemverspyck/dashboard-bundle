@@ -1,0 +1,76 @@
+{
+    "name": "spyck/dashboard-bundle",
+    "description": "Dashboard Bundle for Symfony",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Willem Verspyck",
+            "email": "willemverspyck@outlook.com",
+            "homepage": "https://verspyck.com",
+            "role": "Developer"
+        }
+    ],
+    "keywords": [
+        "dashboard",
+        "database",
+        "doctrine",
+        "php",
+        "widget"
+    ],
+    "homepage": "https://github.com/willemverspyck/dashboard-bundle",
+    "type": "library",
+    "require": {
+        "php": "^8.1",
+        "doctrine/collections": "^2",
+        "doctrine/common": "^3",
+        "doctrine/doctrine-bundle": "^2",
+        "doctrine/orm": "^2",
+        "doctrine/persistence": "^3",
+        "liip/imagine-bundle": "^2",
+        "nelmio/api-doc-bundle": "^4",
+        "phpoffice/phpspreadsheet": "^1",
+        "psr/cache": "^3",
+        "psr/log": "^3",
+        "symfony/cache": "^6.2",
+        "symfony/config": "^6.2",
+        "symfony/console": "^6.2",
+        "symfony/dependency-injection": "^6.2",
+        "symfony/doctrine-bridge": "^6.2",
+        "symfony/event-dispatcher": "^6.2",
+        "symfony/filesystem": "^6.2",
+        "symfony/form": "^6.2",
+        "symfony/framework-bundle": "^6.2",
+        "symfony/http-client-contracts": "^3",
+        "symfony/http-foundation": "^6.2",
+        "symfony/http-kernel": "^6.2",
+        "symfony/mailer": "^6.2",
+        "symfony/messenger": "^6.2",
+        "symfony/mime": "^6.2",
+        "symfony/process": "^6.2",
+        "symfony/http-client": "^6.2",
+        "symfony/routing": "^6.2",
+        "symfony/security-core": "^6.2",
+        "symfony/serializer": "^6.2",
+        "symfony/string": "^6.2",
+        "symfony/twig-bridge": "^6.2",
+        "symfony/validator": "^6.2",
+        "twig/twig": "^3",
+        "vich/uploader-bundle": "^2",
+        "zircote/swagger-php": "^4"
+    },
+    "require-dev": {
+        "dompdf/dompdf": "^2",
+        "phpunit/phpunit": "^10",
+        "squizlabs/php_codesniffer": "^3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Spyck\\DashboardBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Spyck\\DashboardBundle\\Tests\\": "tests/"
+        }
+    }
+}
