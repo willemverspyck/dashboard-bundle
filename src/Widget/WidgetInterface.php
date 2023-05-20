@@ -6,6 +6,9 @@ namespace Spyck\DashboardBundle\Widget;
 
 use Spyck\DashboardBundle\Entity\Widget;
 use Spyck\DashboardBundle\Model\Field;
+use Spyck\DashboardBundle\Request\MultipleRequestInterface;
+use Spyck\DashboardBundle\Request\RequestInterface;
+use Spyck\DashboardBundle\Type\TypeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
