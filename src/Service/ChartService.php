@@ -7,14 +7,13 @@ namespace Spyck\DashboardBundle\Service;
 use Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 use Twig\Environment;
 
-class AmChartService
+class ChartService
 {
-    public function __construct(private readonly Environment $environment, private readonly KernelInterface $kernel, #[Autowire('%spyck.dashboard.chart.command%')] private readonly string $command, #[Autowire('%spyck.dashboard.chart.directory%')] private readonly string $directory)
+    public function __construct(private readonly Environment $environment, #[Autowire('%spyck.dashboard.chart.command%')] private readonly string $command, #[Autowire('%spyck.dashboard.chart.directory%')] private readonly string $directory)
     {
     }
 

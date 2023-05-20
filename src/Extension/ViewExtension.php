@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Spyck\DashboardBundle\Extension;
 
-use Doctrine\Common\Collections\Collection;
 use Exception;
 use Spyck\DashboardBundle\Model\Block;
-use Spyck\DashboardBundle\Service\AmChartService;
+use Spyck\DashboardBundle\Service\ChartService;
+use Spyck\DashboardBundle\Utility\NumberUtility;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Twig\Extension\AbstractExtension;
@@ -16,7 +16,7 @@ use Twig\TwigFunction;
 #[Autoconfigure(tags: ['twig.extension'])]
 final class ViewExtension extends AbstractExtension
 {
-    public function __construct(private readonly AmChartService $amChartService, #[Autowire('%spyck.dashboard.chart.directory%')] private readonly string $directory)
+    public function __construct(private readonly ChartService $chartService, #[Autowire('%spyck.dashboard.chart.directory%')] private readonly string $directory)
     {
     }
 
@@ -49,7 +49,7 @@ final class ViewExtension extends AbstractExtension
 
         $data = $tableView->getWidget($block->getWidget());
 
-        return $this->amChartService->getChart($data, $block->getChart());
+        return $this->chartService->getChart($data, $block->getChart());
     }
 
     /**

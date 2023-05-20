@@ -8,7 +8,7 @@ use Spyck\DashboardBundle\Entity\Widget;
 use Spyck\DashboardBundle\Model\Block;
 use Spyck\DashboardBundle\Model\Dashboard;
 use Spyck\DashboardBundle\Model\Field;
-use Spyck\DashboardBundle\Service\AmChartService;
+use Spyck\DashboardBundle\Service\ChartService;
 use Spyck\DashboardBundle\Service\FileService;
 use DateTimeInterface;
 use Exception;
