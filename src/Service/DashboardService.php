@@ -12,7 +12,7 @@ use Spyck\DashboardBundle\Repository\DashboardRepository;
 use Spyck\DashboardBundle\Repository\PrivilegeRepository;
 use Spyck\DashboardBundle\Utility\BlockUtility;
 use Spyck\DashboardBundle\View\ViewInterface;
-use Spyck\DashboardBundle\Widget\RequestInterface;
+use Spyck\DashboardBundle\Request\RequestInterface;
 use Spyck\DashboardBundle\Parameter\DateParameterInterface;
 use Spyck\DashboardBundle\Parameter\DayRangeParameter;
 use Spyck\DashboardBundle\Parameter\EntityParameterInterface;

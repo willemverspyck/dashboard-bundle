@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Spyck\DashboardBundle\Filter;
 
-use Spyck\DashboardBundle\Widget\RequestInterface;
+use Spyck\DashboardBundle\Request\RequestInterface;
 
 interface FilterInterface extends RequestInterface
 {
