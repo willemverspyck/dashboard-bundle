@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Spyck\DashboardBundle\Widget;
+namespace Spyck\DashboardBundle\Parameter;
 
-final class DayStartParameter extends AbstractDateParameter
+final class DayEndParameter extends AbstractDateParameter
 {
     public function getEnvironment(): ?string
     {
-        return 'PARAMETER_DAY_START';
+        return 'PARAMETER_DAY_END';
     }
 
     public function getField(): string
     {
-        return 'dateStart';
+        return 'dateEnd';
     }
 
     public function getName(): string
     {
-        return 'dateStart';
+        return 'dateEnd';
     }
 }

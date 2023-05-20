@@ -2,27 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Spyck\DashboardBundle\Widget;
+namespace Spyck\DashboardBundle\Filter;
 
-final class OffsetFilter extends AbstractOptionFilter
+final class LimitFilter extends AbstractOptionFilter
 {
     public function __construct()
     {
         $this->setType(FilterInterface::TYPE_INPUT);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getEnvironment(): ?string
     {
-        return 'FILTER_OFFSET';
+        return 'FILTER_LIMIT';
     }
 
     public function getField(): string
     {
-        return 'offset';
+        return 'limit';
     }
 
     public function getName(): string
     {
-        return 'offset';
+        return 'limit';
     }
 }

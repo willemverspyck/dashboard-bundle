@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Spyck\DashboardBundle\Normalizer;
 
-use Spyck\DashboardBundle\Widget\EntityParameterInterface;
+use Spyck\DashboardBundle\Parameter\EntityParameterInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer as BaseAbstractNormalizer;
 
 final class ParameterNormalizer extends AbstractNormalizer

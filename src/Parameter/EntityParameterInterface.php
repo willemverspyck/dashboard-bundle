@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Spyck\DashboardBundle\Widget;
+namespace Spyck\DashboardBundle\Parameter;
 
 interface EntityParameterInterface extends ParameterInterface
 {

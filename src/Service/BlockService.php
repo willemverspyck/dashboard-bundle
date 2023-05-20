@@ -12,11 +12,11 @@ use Spyck\DashboardBundle\Model\Block as BlockModel;
 use Spyck\DashboardBundle\Model\Filter;
 use Spyck\DashboardBundle\Utility\BlockUtility;
 use Spyck\DashboardBundle\View\ViewInterface;
-use Spyck\DashboardBundle\Widget\EntityFilterInterface;
-use Spyck\DashboardBundle\Widget\LimitFilter;
-use Spyck\DashboardBundle\Widget\OffsetFilter;
-use Spyck\DashboardBundle\Widget\OptionFilterInterface;
 use Spyck\DashboardBundle\Widget\WidgetInterface;
+use Spyck\DashboardBundle\Filter\EntityFilterInterface;
+use Spyck\DashboardBundle\Filter\LimitFilter;
+use Spyck\DashboardBundle\Filter\OffsetFilter;
+use Spyck\DashboardBundle\Filter\OptionFilterInterface;
 use Exception;
 use Symfony\Component\Routing\RouterInterface;
 

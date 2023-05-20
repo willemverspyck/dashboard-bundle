@@ -6,7 +6,7 @@ namespace Spyck\DashboardBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use OpenApi\Attributes as OpenApi;
-use Spyck\DashboardBundle\Widget\ParameterInterface;
+use Spyck\DashboardBundle\Parameter\ParameterInterface;
 use Symfony\Component\Serializer\Annotation as Serializer;
 
 final class Dashboard

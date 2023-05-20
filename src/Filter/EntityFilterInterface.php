@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Spyck\DashboardBundle\Widget;
+namespace Spyck\DashboardBundle\Filter;
 
 interface EntityFilterInterface extends FilterInterface
 {

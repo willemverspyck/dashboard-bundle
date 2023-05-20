@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Spyck\DashboardBundle\Widget;
+namespace Spyck\DashboardBundle\Parameter;
+
+use Spyck\DashboardBundle\Widget\RequestInterface;
 
 interface ParameterInterface extends RequestInterface
 {
