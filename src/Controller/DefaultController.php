@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Spyck\DashboardBundle\Controller;
 
+use Doctrine\ORM\NonUniqueResultException;
+use Spyck\DashboardBundle\Entity\Dashboard;
 use Spyck\DashboardBundle\Entity\UserInterface;
 use Spyck\DashboardBundle\Form\DashboardMailType;
 use Spyck\DashboardBundle\Message\MailMessage;
-use Spyck\DashboardBundle\Model\Dashboard;
+use Spyck\DashboardBundle\Model\Dashboard as DashboardAsModel;
 use Spyck\DashboardBundle\Repository\DashboardRepository;
 use Spyck\DashboardBundle\Schema;
 use Spyck\DashboardBundle\Service\ActivityService;
 use Spyck\DashboardBundle\Service\DashboardService;
-use Doctrine\ORM\NonUniqueResultException;
 use Exception;
 use OpenApi\Attributes as OpenApi;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,29 +24,14 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Throwable;
 
 #[AsController]
 #[OpenApi\Tag(name: 'Dashboard')]
 final class DefaultController extends AbstractController
 {
-    #[Route(path: '/', name: 'spyck_dashboard_default_index', methods: [Request::METHOD_GET])]
-    public function index(AuthorizationCheckerInterface $authorizationChecker, DashboardService $dashboardService): Response
-    {
-        $dashboardRoute = $dashboardService->getDashboardRouteOfPrivilege();
-
-        if (null !== $dashboardRoute) {
-            return $this->redirect($dashboardRoute->getUrl());
-        }
-
-        if ($authorizationChecker->isGranted('ROLE_ADMIN')) {
-            return $this->redirectToRoute('sonata_admin_dashboard');
-        }
-
-        throw $this->createNotFoundException('No rights');
-    }
-
     /**
+     * @throws Throwable
      * @throws NonUniqueResultException
      */
     #[Route(path: '/dashboard/{dashboardId}', name: 'spyck_dashboard_default_show', requirements: ['dashboardId' => Requirement::DIGITS], methods: [Request::METHOD_GET])]
@@ -53,15 +39,15 @@ final class DefaultController extends AbstractController
     {
         $dashboard = $dashboardRepository->getDashboardById($dashboardId);
 
-        assert($dashboard instanceof Dashboard, $this->createNotFoundException('The dashboard does not exist'));
+        if (false === $dashboard instanceof Dashboard) {
+            throw $this->createNotFoundException('The dashboard does not exist');
+        }
 
         $parameters = $request->query->all();
         $parameters['dashboardId'] = $dashboard->getId();
 
-        return $this->render('dashboard/index.html.twig', [
-            'dashboard' => $this->generateUrl('app_dashboard_item', $parameters),
-            'menu' => $this->generateUrl('app_menu_list'),
-            'user' => $this->generateUrl('app_user_item'),
+        return $this->render('@SpyckDashboard/dashboard/index.html.twig', [
+            'parameters' => $parameters,
         ]);
     }
 
@@ -72,7 +58,7 @@ final class DefaultController extends AbstractController
     #[Schema\BadRequest]
     #[Schema\Forbidden]
     #[Schema\NotFound]
-    #[Schema\ResponseItem(type: Dashboard::class, groups: ['dashboard'])]
+    #[Schema\ResponseItem(type: DashboardAsModel::class, groups: ['dashboard'])]
     public function item(ActivityService $activityService, DashboardRepository $dashboardRepository, DashboardService $dashboardService, Request $request, int $dashboardId): Response
     {
         $dashboard = $dashboardRepository->getDashboardById($dashboardId);

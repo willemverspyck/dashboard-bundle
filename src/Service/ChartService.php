@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Spyck\DashboardBundle\Service;
 
 use Exception;
+use Spyck\DashboardBundle\Model\Block;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -20,9 +21,12 @@ class ChartService
     /**
      * @throws Exception
      */
-    public function getChart(string $data, string $type): string
+    public function getChart(Block $block): string
     {
-        $name = md5(sprintf('%s-%s', $data, $type));
+        $widget = $block->getWidget();
+        $type = $block->getChart();
+
+        $name = md5(sprintf('%s-%s', serialize($widget), $type));
 
         $chart = sprintf('%s/%s.png', $this->directory, $name);
 
@@ -30,9 +34,8 @@ class ChartService
             return $chart;
         }
 
-        $content = $this->environment->render('@SpyckDashboard/amchart/index.html.twig', [
-            'data' => $data,
-            'type' => $type,
+        $content = $this->environment->render('@SpyckDashboard/chart/index.html.twig', [
+            'block' => $block,
             'name' => $name,
         ]);
 

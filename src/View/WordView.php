@@ -8,8 +8,6 @@ use Spyck\DashboardBundle\Entity\Widget;
 use Spyck\DashboardBundle\Model\Block;
 use Spyck\DashboardBundle\Model\Dashboard;
 use Spyck\DashboardBundle\Model\Field;
-use Spyck\DashboardBundle\Service\ChartService;
-use Spyck\DashboardBundle\Service\FileService;
 use DateTimeInterface;
 use Exception;
 use PhpOffice\PhpWord\Element\Section;
@@ -21,12 +19,14 @@ use PhpOffice\PhpWord\SimpleType\Jc;
 use PhpOffice\PhpWord\SimpleType\TblWidth;
 use PhpOffice\PhpWord\SimpleType\Zoom;
 use PhpOffice\PhpWord\Style\Table;
+use Spyck\DashboardBundle\Service\ChartService;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 final class WordView extends AbstractView
 {
     private Document $document;
 
-    public function __construct() // private readonly AmChartService $amChartService, private readonly FileService $fileService
+    public function __construct(private readonly ChartService $chartService, #[Autowire('%spyck.dashboard.directory%')] private readonly string $directory)
     {
     }
 
@@ -80,10 +80,10 @@ final class WordView extends AbstractView
         return match ($type) {
             Field::TYPE_BOOLEAN => $value ? '✓' : '✕',
             Field::TYPE_CURRENCY => sprintf('€ %s', $this->getValueOfNumber($typeOptions, $value)),
-            Field::TYPE_IMAGE => sprintf('%s%s', $this->fileService->getPublicDirectory(), $value),
+            Field::TYPE_IMAGE => sprintf('%s%s', $this->directory, $value),
             Field::TYPE_NUMBER => $this->getValueOfNumber($typeOptions, $value),
             Field::TYPE_PERCENTAGE => sprintf('%s%%', $this->getValueOfNumber($typeOptions, $value * 100)),
-            Field::TYPE_POSITION => sprintf('%s/images/icons/position_%s.png', $this->fileService->getPublicDirectory(), 0.0 === $value ? 'equal' : ($value > 0 ? 'greater' : 'less')),
+            Field::TYPE_POSITION => sprintf('%s/images/icons/position_%s.png', $this->directory, 0.0 === $value ? 'equal' : ($value > 0 ? 'greater' : 'less')),
             default => parent::getValue($type, $typeOptions, $value),
         };
     }
@@ -102,7 +102,12 @@ final class WordView extends AbstractView
         }
 
         $docInfo->setCreator($dashboard->getUser());
-        $docInfo->setCompany($dashboard->getCopyright());
+
+        $copyright = $dashboard->getCopyright();
+
+        if (null !== $copyright) {
+            $docInfo->setCompany($copyright);
+        }
 
         $this->document->setDefaultFontName('Arial');
         $this->document->setDefaultFontSize(10);
@@ -137,7 +142,7 @@ final class WordView extends AbstractView
         ]);
 
         $cell = $tableRow->addCell(300);
-        $cell->addImage(sprintf('%s/images/icon.png', $this->fileService->getPublicDirectory()), $this->getStyleImageForHeader());
+        $cell->addImage(sprintf('%s/images/icon.png', $this->directory), $this->getStyleImageForHeader());
     }
 
     private function addFooter(): void
@@ -191,52 +196,53 @@ final class WordView extends AbstractView
 
         $data = $widget->getData();
 
-        if (count($data) > 0) {
-            if (Widget::CHART_TABLE === $block->getChart()) {
-                $table = $section->addTable($this->getStyleTable($section));
+        if (0 === count($data)) {
+            $section->addText($block->getDescriptionEmpty(), $this->getStyleText());
+
+            return;
+        }
+
+        if (Widget::CHART_TABLE === $block->getChart()) {
+            $table = $section->addTable($this->getStyleTable($section));
+            $tableRow = $table->addRow();
+
+            $fields = $widget->getFields();
+
+            foreach ($fields as $field) {
+                $tableRow->addCell(null, $this->getStyleTableForHeader())->addText($field['name'], $this->getStyleFontForHeaderOfTable());
+            }
+
+            foreach ($data as $index => $row) {
                 $tableRow = $table->addRow();
 
-                $fields = $widget->getFields();
+                foreach ($row['fields'] as $fieldIndex => $field) {
+                    $tableCell = $tableRow->addCell(null, $this->getStyleTableForBody(0 !== $index % 2));
 
-                foreach ($fields as $field) {
-                    $tableRow->addCell(null, $this->getStyleTableForHeader())->addText($field['name'], $this->getStyleFontForHeaderOfTable());
-                }
+                    $value = $this->getValue($fields[$fieldIndex]['type'], $fields[$fieldIndex]['typeOptions'], $field['value']);
 
-                foreach ($data as $index => $row) {
-                    $tableRow = $table->addRow();
+                    if (null !== $value) {
+                        if (Field::TYPE_IMAGE === $fields[$fieldIndex]['type']) {
+                            $tableCell->addImage($value, $this->getStyleImageForBodyOfTable());
+                        } elseif (Field::TYPE_POSITION === $fields[$fieldIndex]['type']) {
+                            $tableCell->addImage($value, $this->getStylePositionForBodyOfTable());
+                        } else {
+                            $color = $this->getColor($fields[$fieldIndex]['type'], $fields[$fieldIndex]['typeOptions'], $field['value']);
 
-                    foreach ($row['fields'] as $fieldIndex => $field) {
-                        $tableCell = $tableRow->addCell(null, $this->getStyleTableForBody(0 !== $index % 2));
-
-                        $value = $this->getValue($fields[$fieldIndex]['type'], $fields[$fieldIndex]['typeOptions'], $field['value']);
-
-                        if (null !== $value) {
-                            if (Field::TYPE_IMAGE === $fields[$fieldIndex]['type']) {
-                                $tableCell->addImage($value, $this->getStyleImageForBodyOfTable());
-                            } elseif (Field::TYPE_POSITION === $fields[$fieldIndex]['type']) {
-                                $tableCell->addImage($value, $this->getStylePositionForBodyOfTable());
-                            } else {
-                                $color = $this->getColor($fields[$fieldIndex]['type'], $fields[$fieldIndex]['typeOptions'], $field['value']);
-
-                                $tableCell->addText($value, $this->getStyleFontForBodyOfTable($color));
-                            }
+                            $tableCell->addText($value, $this->getStyleFontForBodyOfTable($color));
                         }
                     }
                 }
-            } else {
-                $tableView = new TableView();
-
-                $chartData = $tableView->getWidget($block->getWidget());
-                $chartType = $block->getChart();
-
-                $chart = $this->amChartService->getChart($chartData, $chartType);
-
-                $source = file_get_contents($chart);
-
-                $section->addImage($source, $this->getStyleChart($section));
             }
-        } else {
-            $section->addText($block->getDescriptionEmpty(), $this->getStyleText());
+
+            return;
+        }
+
+        $chart = $this->chartService->getChart($block);
+
+        $source = file_get_contents($chart);
+
+        if (false !== $source) {
+            $section->addImage($source, $this->getStyleChart($section));
         }
     }
 

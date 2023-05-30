@@ -6,7 +6,7 @@
 !/bin/console
 
 # PHP CS
-/.php_cs.cache
+/.php-cs.cache
 
 # PHP CS Fixer
 /.php-cs-fixer.cache

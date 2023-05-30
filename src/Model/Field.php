@@ -36,9 +36,6 @@ final class Field
 
     private ?array $typeOptions = null;
 
-    /**
-     * @var callable|null
-     */
     private ?Callback $filter = null;
 
     /**
@@ -46,10 +43,6 @@ final class Field
      */
     private Collection $children;
 
-    /**
-     * @param Callback|string $source
-     * @param Callback|null $filter
-     */
     public function __construct(string $name, Callback|string $source, string $type, array $typeOptions = null, Callback $filter = null)
     {
         $this->children = new ArrayCollection();
@@ -121,11 +114,6 @@ final class Field
         return $this->typeOptions;
     }
 
-    /**
-     * @param Callback|null $filter
-     *
-     * @return $this
-     */
     public function setFilter(?Callback $filter): static
     {
         $this->filter = $filter;

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Spyck\DashboardBundle\Repository;
 
-use Spyck\DashboardBundle\Entity\User;
+use Doctrine\ORM\NonUniqueResultException;
+use Spyck\DashboardBundle\Entity\UserInterface;
 use Spyck\DashboardBundle\Entity\Widget;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -21,10 +22,12 @@ class WidgetRepository extends ServiceEntityRepository
 
     /**
      * Get widget by id.
+     *
+     * @throws NonUniqueResultException
      */
     public function getWidgetById(int $id): ?Widget
     {
-        /** @var User $user */
+        /** @var UserInterface $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
         $queryBuilder = $this->createQueryBuilder('widget')
@@ -49,10 +52,12 @@ class WidgetRepository extends ServiceEntityRepository
 
     /**
      * Get widget by adapter.
+     *
+     * @throws NonUniqueResultException
      */
     public function getWidgetByAdapter(string $adapter): ?Widget
     {
-        /** @var User $user */
+        /** @var UserInterface $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
         $queryBuilder = $this->createQueryBuilder('widget')

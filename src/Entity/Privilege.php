@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Spyck\DashboardBundle\Entity;
 
-use App\Entity\Group;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -34,9 +33,9 @@ class Privilege implements Stringable
     private int $priority;
 
     /**
-     * @var Collection<int, Group>
+     * @var Collection<int, GroupInterface>
      */
-    #[Doctrine\ManyToMany(targetEntity: Group::class, inversedBy: 'privileges')]
+    #[Doctrine\ManyToMany(targetEntity: GroupInterface::class, inversedBy: 'privileges')]
     #[Doctrine\JoinTable(name: 'privilege_group')]
     #[Doctrine\JoinColumn(name: 'privilege_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[Doctrine\InverseJoinColumn(name: 'group_id', referencedColumnName: 'id')]
@@ -100,14 +99,14 @@ class Privilege implements Stringable
         return $this->priority;
     }
 
-    public function addGroup(Group $group): static
+    public function addGroup(GroupInterface $group): static
     {
         $this->groups->add($group);
 
         return $this;
     }
 
-    public function removeGroup(Group $group): void
+    public function removeGroup(GroupInterface $group): void
     {
         $this->groups->removeElement($group);
     }
@@ -118,7 +117,7 @@ class Privilege implements Stringable
     }
 
     /**
-     * @return Collection<int, Group>
+     * @return Collection<int, GroupInterface>
      */
     public function getGroups(): Collection
     {

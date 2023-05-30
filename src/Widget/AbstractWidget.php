@@ -17,7 +17,7 @@ use Spyck\DashboardBundle\Parameter\ParameterInterface;
 use Spyck\DashboardBundle\Type\TypeInterface;
 use Symfony\Polyfill\Intl\Icu\Exception\MethodNotImplementedException;
 
-abstract class AbstractWidget implements WidgetInterface, DoctrineInterface
+abstract class AbstractWidget implements WidgetInterface
 {
     private const CACHE = 7200;
 

@@ -6,9 +6,6 @@ namespace Spyck\DashboardBundle\View;
 
 final class SsvView extends CsvView
 {
-    /**
-     * {@inheritDoc}
-     */
     public static function getName(): string
     {
         return ViewInterface::SSV;

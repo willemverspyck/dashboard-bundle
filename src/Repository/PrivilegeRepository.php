@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Spyck\DashboardBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 use Spyck\DashboardBundle\Entity\Privilege;
@@ -22,6 +23,8 @@ class PrivilegeRepository extends ServiceEntityRepository
 
     /**
      * Get first role ordered by priority.
+     *
+     * @throws NonUniqueResultException
      */
     public function getPrivilege(): ?Privilege
     {

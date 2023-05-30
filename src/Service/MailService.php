@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Spyck\DashboardBundle\Service;
 
-use Psr\Log\LoggerInterface;
 use Spyck\DashboardBundle\Entity\Mail;
 use Spyck\DashboardBundle\Entity\Schedule;
 use Spyck\DashboardBundle\Message\MailMessage;
@@ -16,14 +15,12 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\BodyRendererInterface;
-use Symfony\Component\Mime\DraftEmail;
 use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Twig\Environment;
 
 class MailService
 {
-    public function __construct(private readonly BodyRendererInterface $bodyRenderer, private readonly Environment $environment, private readonly MailRepository $mailRepository, private readonly MessageBusInterface $messageBus, private readonly MailerInterface $mailer, private readonly LoggerInterface $logger, #[Autowire('%spyck.dashboard.mailer.from.email%')] private readonly string $fromEmail, #[Autowire('%spyck.dashboard.mailer.from.name%')] private readonly string $fromName)
+    public function __construct(private readonly BodyRendererInterface $bodyRenderer, private readonly MailRepository $mailRepository, private readonly MessageBusInterface $messageBus, private readonly MailerInterface $mailer, #[Autowire('%spyck.dashboard.mailer.from.email%')] private readonly string $fromEmail, #[Autowire('%spyck.dashboard.mailer.from.name%')] private readonly string $fromName)
     {
     }
 

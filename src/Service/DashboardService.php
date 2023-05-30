@@ -237,8 +237,8 @@ class DashboardService
 
         return $dashboardRequest
             ->setName($dashboard->getName())
-            ->setUrl($this->router->generate('app_dashboard_show', $variables))
-            ->setCallback($this->router->generate('app_dashboard_item', $variables, UrlGeneratorInterface::ABSOLUTE_URL));
+            ->setUrl($this->router->generate('spyck_dashboard_default_show', $variables))
+            ->setCallback($this->router->generate('spyck_dashboard_default_item', $variables, UrlGeneratorInterface::ABSOLUTE_URL));
     }
 
     /**
@@ -309,7 +309,7 @@ class DashboardService
         }
 
         return [
-            'url' => $this->router->generate('app_dashboard_mail', [
+            'url' => $this->router->generate('spyck_dashboard_default_mail', [
                 'dashboardId' => $dashboard->getId(),
             ]),
             'fields' => [

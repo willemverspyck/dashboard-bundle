@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Spyck\DashboardBundle\Service;
 
-use Spyck\DashboardBundle\Entity\Api;
 use Spyck\DashboardBundle\Entity\Block;
 use Spyck\DashboardBundle\Entity\Mail;
-use Spyck\DashboardBundle\Entity\Module;
 use Spyck\DashboardBundle\Model\Block as BlockModel;
 use Spyck\DashboardBundle\Model\Filter;
 use Spyck\DashboardBundle\Utility\BlockUtility;
@@ -85,42 +83,14 @@ class BlockService
                     return $object->getId();
                 }, $items);
 
-                $repository = $this->repositoryService->getRepository($name);
+                $entityData = $this->repositoryService->getRepository($name)->getEntityData($widgetInstance);
 
-                if (null !== $repository) {
-                    $entityData = $this->repositoryService->getEntityData($name);
-
-                    foreach ($entityData as $entityRow) {
-                        $parent = null;
-
-                        if ($entityRow instanceof Api) {
-                            $apiType = array_filter($entityRow->getModules()->toArray(), function (Module $module) use ($typeName): bool {
-                                return $typeName === $module->getType();
-                            });
-
-                            if (0 === count($apiType)) {
-                                continue;
-                            }
-                        }
-
-                        if ($entityRow instanceof Module) {
-                            if ($typeName !== $entityRow->getType()) {
-                                continue;
-                            }
-
-                            $parent = [
-                                'field' => 'apiIds',
-                                'id' => $entityRow->getApi()->getId(),
-                            ];
-                        }
-
-                        $returnEntityData[] = [
-                            'id' => $entityRow->getId(),
-                            'parent' => $parent,
-                            'name' => $entityRow->getName(),
-                            'select' => in_array($entityRow->getId(), $items, true),
-                        ];
-                    }
+                foreach ($entityData as $entityRow) {
+                    $returnEntityData[] = [
+                        'id' => $entityRow->getId(),
+                        'name' => $entityRow->getName(),
+                        'select' => in_array($entityRow->getId(), $items, true),
+                    ];
                 }
             }
 
@@ -170,7 +140,7 @@ class BlockService
             '_format' => $format,
         ];
 
-        return $this->router->generate('app_widget_show', $parameters);
+        return $this->router->generate('spyck_dashboard_widget_show', $parameters);
     }
 
     /**

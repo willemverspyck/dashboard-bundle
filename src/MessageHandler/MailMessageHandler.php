@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace Spyck\DashboardBundle\MessageHandler;
 
 use Spyck\DashboardBundle\Entity\Activity;
+use Spyck\DashboardBundle\Entity\UserInterface;
 use Spyck\DashboardBundle\Message\MailMessageInterface;
 use Spyck\DashboardBundle\Entity\Dashboard;
 use Spyck\DashboardBundle\Model\Dashboard as DashboardAsModel;
-use App\Repository\UserRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Exception;
 use Spyck\DashboardBundle\Repository\ActivityRepository;
 use Spyck\DashboardBundle\Repository\DashboardRepository;
+use Spyck\DashboardBundle\Repository\UserRepository;
 use Spyck\DashboardBundle\Service\DashboardService;
 use Spyck\DashboardBundle\Service\MailService;
 use Spyck\DashboardBundle\Service\ViewService;
@@ -25,7 +26,6 @@ use Symfony\Component\Mime\Part\DataPart;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[AsMessageHandler]
 final class MailMessageHandler
@@ -136,7 +136,7 @@ final class MailMessageHandler
             }
         }
 
-        $this->mailService->sendMail($user->getEmail(), $user->getName(), implode(' | ', $subject), '@SpyckDashboard/mail/mail.html.twig', $data, $attachments);
+        $this->mailService->sendMail($user->getEmail(), $user->getName(), implode(' | ', $subject), '@SpyckDashboard/mail/index.html.twig', $data, $attachments);
     }
 
     private function getAttachment(DashboardAsModel $dashboard, ViewInterface $view, string $name = null): DataPart

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Spyck\DashboardBundle\Repository;
 
-use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 abstract class AbstractRepository extends ServiceEntityRepository

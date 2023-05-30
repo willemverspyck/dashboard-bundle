@@ -4,19 +4,12 @@ declare(strict_types=1);
 
 namespace Spyck\DashboardBundle\Service;
 
-use DateTime;
 use Exception;
 use Liip\ImagineBundle\Message\WarmupCache;
 use Liip\ImagineBundle\Service\FilterService;
-use Psr\Log\LoggerInterface;
 use stdClass;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 class ImageService

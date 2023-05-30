@@ -8,6 +8,7 @@ use Spyck\DashboardBundle\Model\Block;
 use Spyck\DashboardBundle\Model\Dashboard;
 use Spyck\DashboardBundle\Model\Field;
 use DateTimeInterface;
+use Exception;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Settings;
@@ -26,6 +27,9 @@ final class ExcelView extends AbstractView
     {
     }
 
+    /**
+     * @throws Exception
+     */
     public function getContent(Dashboard $dashboard): string
     {
         $this->setSpreadsheet($dashboard);
@@ -93,9 +97,17 @@ final class ExcelView extends AbstractView
         }
 
         $properties->setCreator($dashboard->getUser());
-        $properties->setCompany($dashboard->getCopyright());
+
+        $copyright = $dashboard->getCopyright();
+
+        if (null !== $copyright) {
+            $properties->setCompany($copyright);
+        }
     }
 
+    /**
+     * @throws Exception
+     */
     private function addSheet(int $index, Block $block): void
     {
         if ($index > 0) {

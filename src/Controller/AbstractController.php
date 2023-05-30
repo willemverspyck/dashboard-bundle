@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 abstract class AbstractController extends BaseAbstractController
 {
-    public const GROUPS = [];
+    public const GROUPS = ['spyck:dashboard'];
 
     public function getForm(string $type, mixed $object, ?array $data, callable $callback): JsonResponse
     {

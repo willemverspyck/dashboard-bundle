@@ -19,7 +19,7 @@ final class Dashboard
     #[Serializer\Groups(['dashboard'])]
     private ?string $description = null;
 
-    private string $copyright;
+    private ?string $copyright = null;
 
     #[Serializer\Groups(['dashboard'])]
     private ?string $url = null;
@@ -92,14 +92,14 @@ final class Dashboard
         return $this->description;
     }
 
-    public function setCopyright(string $copyright): static
+    public function setCopyright(?string $copyright): static
     {
         $this->copyright = $copyright;
 
         return $this;
     }
 
-    public function getCopyright(): string
+    public function getCopyright(): ?string
     {
         return $this->copyright;
     }

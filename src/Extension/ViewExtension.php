@@ -16,7 +16,7 @@ use Twig\TwigFunction;
 #[Autoconfigure(tags: ['twig.extension'])]
 final class ViewExtension extends AbstractExtension
 {
-    public function __construct(private readonly ChartService $chartService, #[Autowire('%spyck.dashboard.chart.directory%')] private readonly string $directory)
+    public function __construct(private readonly ChartService $chartService, #[Autowire('%spyck.dashboard.directory%')] private readonly string $directory)
     {
     }
 
@@ -45,11 +45,7 @@ final class ViewExtension extends AbstractExtension
      */
     public function getChart(Block $block): string
     {
-        $tableView = new TableView();
-
-        $data = $tableView->getWidget($block->getWidget());
-
-        return $this->chartService->getChart($data, $block->getChart());
+        return $this->chartService->getChart($block);
     }
 
     /**

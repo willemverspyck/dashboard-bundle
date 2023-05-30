@@ -6,6 +6,7 @@ namespace Spyck\DashboardBundle\Parameter;
 
 use DateTime;
 use DateTimeInterface;
+use Exception;
 
 abstract class AbstractDateParameter implements DateParameterInterface
 {
@@ -42,6 +43,9 @@ abstract class AbstractDateParameter implements DateParameterInterface
         return null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function setData(string $data): void
     {
         $this->data = new DateTime($data);

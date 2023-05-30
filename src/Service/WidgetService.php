@@ -6,7 +6,6 @@ namespace Spyck\DashboardBundle\Service;
 
 use Spyck\DashboardBundle\Entity\Block;
 use Spyck\DashboardBundle\Entity\Widget;
-use Spyck\DashboardBundle\Exception\NotFoundException;
 use Spyck\DashboardBundle\Model\Block as BlockModel;
 use Spyck\DashboardBundle\Model\Dashboard as DashboardModel;
 use Spyck\DashboardBundle\Model\Field;
@@ -158,7 +157,7 @@ class WidgetService
     private function getWidgetDataByWidget(?Widget $widget, array $variables = []): DashboardModel
     {
         if (null === $widget) {
-            throw new NotFoundException('The widget does not exist');
+            throw new NotFoundHttpException('The widget does not exist');
         }
 
         $currentRequest = $this->requestStack->getCurrentRequest();
@@ -447,7 +446,7 @@ class WidgetService
             return null;
         }
 
-        $name = 'app_widget_show';
+        $name = 'spyck_dashboard_widget_show';
 
         $parameters = $this->getPaginationParameters($name);
 
@@ -544,6 +543,9 @@ class WidgetService
         return null;
     }
 
+    /**
+     * @throws Exception
+     */
     private function getDataValueImage(array $definition, string $value): ?string
     {
         if (false === array_key_exists('source', $definition) || false === array_key_exists('typeOptions', $definition) || false === array_key_exists('class', $definition['typeOptions'])) {
@@ -577,8 +579,8 @@ class WidgetService
                 if (null !== $routeParameters) {
                     $content[] = [
                         'name' => $route['name'],
-                        'url' => $this->urlGenerator->generate('app_dashboard_show', $routeParameters),
-                        'callback' => $this->urlGenerator->generate('app_dashboard_item', $routeParameters, UrlGeneratorInterface::ABSOLUTE_URL),
+                        'url' => $this->urlGenerator->generate('spyck_dashboard_default_show', $routeParameters),
+                        'callback' => $this->urlGenerator->generate('spyck_dashboard_default_item', $routeParameters, UrlGeneratorInterface::ABSOLUTE_URL),
                     ];
                 }
             }
@@ -608,6 +610,8 @@ class WidgetService
 
     /**
      * Get the overlay data of the route.
+     *
+     * @throws Exception
      */
     private function getDataOverlays(array $definition, array $data): array
     {

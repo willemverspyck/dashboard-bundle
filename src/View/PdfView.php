@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Spyck\DashboardBundle\View;
 
 use Spyck\DashboardBundle\Model\Dashboard;
-use Spyck\DashboardBundle\Service\FileService;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Exception;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Twig\Environment;
 
 final class PdfView extends AbstractView
 {
-    public function __construct(private readonly Environment $environment) # , private readonly FileService $fileService
+    public function __construct(private readonly Environment $environment, #[Autowire('%spyck.dashboard.chart.directory%')] private readonly string $chartDirectory, #[Autowire('%spyck.dashboard.directory%')] private readonly string $directory)
     {
     }
 
@@ -24,12 +24,11 @@ final class PdfView extends AbstractView
     {
         $options = new Options();
         $options->setChroot([
-            $this->fileService->getPublicDirectory(),
-            $this->fileService->getPublicDirectory('cache'),
-            $this->fileService->getTemporaryDirectoryForChart(),
+            $this->chartDirectory,
+            $this->directory,
         ]);
 
-        $html = $this->environment->render('view/pdf.html.twig', [
+        $html = $this->environment->render('@SpyckDashboard/view/pdf.html.twig', [
             'dashboard' => $dashboard,
         ]);
 

@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Spyck\DashboardBundle\Entity;
 
-use App\Entity\Module;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as Doctrine;
 use Stringable;
@@ -35,18 +32,8 @@ class Schedule implements Stringable
     #[Doctrine\Column(name: 'weekdays', type: Types::JSON)]
     private array $weekdays;
 
-    /**
-     * @var Collection<int, Module>
-     */
-    #[Doctrine\ManyToMany(targetEntity: Module::class)]
-    #[Doctrine\JoinTable(name: 'schedule_module')]
-    #[Doctrine\JoinColumn(name: 'schedule_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    #[Doctrine\InverseJoinColumn(name: 'module_id', referencedColumnName: 'id')]
-    private Collection $modules;
-
     public function __construct()
     {
-        $this->modules = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -112,31 +99,6 @@ class Schedule implements Stringable
     public function getWeekdays(): array
     {
         return $this->weekdays;
-    }
-
-    public function addModule(Module $module): static
-    {
-        $this->modules->add($module);
-
-        return $this;
-    }
-
-    public function removeModule(Module $module): void
-    {
-        $this->modules->removeElement($module);
-    }
-
-    public function clearModules(): void
-    {
-        $this->modules->clear();
-    }
-
-    /**
-     * @return Collection<int, Module>
-     */
-    public function getModules(): Collection
-    {
-        return $this->modules;
     }
 
     public function __toString(): string

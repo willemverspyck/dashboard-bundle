@@ -11,9 +11,6 @@ final class LimitFilter extends AbstractOptionFilter
         $this->setType(FilterInterface::TYPE_INPUT);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getEnvironment(): ?string
     {
         return 'FILTER_LIMIT';

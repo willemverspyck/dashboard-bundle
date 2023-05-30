@@ -49,6 +49,10 @@ class Activity
     #[Doctrine\Column(name: 'log', type: Types::JSON, nullable: true)]
     private ?array $log = null;
 
+    public function __construct()
+    {
+    }
+
     public function getId(): ?int
     {
         return $this->id;

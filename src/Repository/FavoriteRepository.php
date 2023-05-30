@@ -24,5 +24,7 @@ class FavoriteRepository extends AbstractRepository
 
         $this->getEntityManager()->persist($favorite);
         $this->getEntityManager()->flush();
+
+        return $favorite;
     }
 }

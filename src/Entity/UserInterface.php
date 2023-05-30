@@ -16,4 +16,6 @@ interface UserInterface extends BaseUserInterface
     public function getEmail(): string;
 
     public function getGroups(): Collection;
+
+    public function isActive(): bool;
 }

@@ -23,7 +23,11 @@ final class SpyckDashboardBundle extends AbstractBundle
         $builder->setParameter('spyck.dashboard.chart.command', $config['chart']['command']);
         $builder->setParameter('spyck.dashboard.chart.directory', $config['chart']['directory']);
 
+        $builder->setParameter('spyck.dashboard.directory', $config['directory']);
+
         $builder->setParameter('spyck.dashboard.mailer.from.email', $config['mailer']['from']['email']);
         $builder->setParameter('spyck.dashboard.mailer.from.name', $config['mailer']['from']['name']);
+
+        $builder->setParameter('spyck.dashboard.user.class', $config['user']['class']);
     }
 }

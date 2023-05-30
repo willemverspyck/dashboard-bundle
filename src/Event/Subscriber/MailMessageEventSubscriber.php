@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Spyck\DashboardBundle\Event\Subscriber;
 
-use App\Repository\UserRepository;
 use Exception;
 use Spyck\DashboardBundle\Entity\Activity;
+use Spyck\DashboardBundle\Message\MailMessageInterface;
 use Spyck\DashboardBundle\Repository\ActivityRepository;
 use Spyck\DashboardBundle\Repository\DashboardRepository;
+use Spyck\DashboardBundle\Repository\UserRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Event\WorkerMessageFailedEvent;
 
@@ -42,7 +43,7 @@ final class MailMessageEventSubscriber implements EventSubscriberInterface
         $message = $event->getEnvelope()->getMessage();
 
         if ($message instanceof MailMessageInterface) {
-            $user = $this->userRepository->getUserById($message->getUser(), false);
+            $user = $this->userRepository->getUserById($message->getUser());
 
             if (null === $user) {
                 return;

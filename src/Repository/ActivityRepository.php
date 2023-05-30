@@ -8,7 +8,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Spyck\DashboardBundle\Entity\Activity;
 use Spyck\DashboardBundle\Entity\Dashboard;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Spyck\DashboardBundle\Entity\UserInterface;
 
 class ActivityRepository extends ServiceEntityRepository
 {
@@ -17,9 +17,6 @@ class ActivityRepository extends ServiceEntityRepository
         parent::__construct($managerRegistry, Activity::class);
     }
 
-    /**
-     * Store activity.
-     */
     public function putActivity(UserInterface $user, Dashboard $dashboard, array $variables, string $view, int $type, array $log = null): Activity
     {
         $activity = new Activity();
